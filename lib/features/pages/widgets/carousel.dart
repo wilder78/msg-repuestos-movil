@@ -1,4 +1,4 @@
-// lib/features/home/widgets/carousel.dart
+// lib/features/pages/widgets/carousel.dart
 
 import 'dart:async';
 

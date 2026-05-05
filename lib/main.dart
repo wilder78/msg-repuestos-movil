@@ -1,24 +1,14 @@
-// lib/main.dart
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'features/home/home_page.dart';
+import 'features/shell_page.dart';
 import 'features/auth/login_page.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // ✅ Revisar si existe token guardado
-  final prefs = await SharedPreferences.getInstance();
-  final token = prefs.getString('auth_token');
-
-  runApp(MyApp(initialRoute: token != null ? '/' : '/login'));
+void main() {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String initialRoute;
-  const MyApp({super.key, required this.initialRoute});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +20,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      initialRoute: initialRoute,
+      initialRoute: '/',
       routes: {
-        '/': (context) => const HomePage(),
+        '/': (context) => const ShellPage(),
         '/login': (context) => const LoginPage(),
       },
     );

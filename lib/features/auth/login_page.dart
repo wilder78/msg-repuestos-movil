@@ -1,11 +1,13 @@
 // lib/features/auth/login_page.dart
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/user_model.dart';
 import 'services/auth_service.dart';
-import '../home/home_page.dart';
+import '../shell_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -45,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       // ✅ Guardar token en SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('auth_token', result.token);
+      await prefs.setString('auth_user', jsonEncode(result.user.toJson()));
 
       _navigateToHome(result.user);
     } catch (e) {
@@ -58,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _navigateToHome(UserModel user) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => HomePage(user: user)),
+      MaterialPageRoute(builder: (_) => ShellPage(user: user)),
     );
   }
 

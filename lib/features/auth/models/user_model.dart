@@ -31,6 +31,18 @@ class UserModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'idUsuario': idUsuario,
+      'nombreUsuario': nombreUsuario,
+      'email': email,
+      'idEstado': idEstado,
+      'fechaCreacion': fechaCreacion,
+      'idRol': idRol,
+      'idCliente': idCliente,
+    };
+  }
+
   bool get isMaster => idRol == 1;
   bool get isVendedor => idRol == 3;
   bool get isCliente => idRol == 4;
