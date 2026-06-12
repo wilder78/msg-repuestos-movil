@@ -7,7 +7,7 @@ class DioConfig {
   // Celular físico:   http://192.168.1.107:8080/api/
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://localhost:8080/api/', // 👈 default para Flutter Web
+    defaultValue: 'https://chocolate-badger-127197.hostingersite.com/api/',
   );
 
   static final Dio dio = Dio(
