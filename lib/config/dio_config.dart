@@ -2,12 +2,12 @@ import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 
 class DioConfig {
-  // Web:            http://localhost:8080/api/
-  // Emulador Android: http://10.0.2.2:8080/api/
-  // Celular físico:   http://192.168.1.107:8080/api/
+  // Web:            http://localhost:8080/
+  // Emulador Android: http://10.0.2.2:8080/
+  // Celular físico:   http://192.168.1.107:8080/
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://chocolate-badger-127197.hostingersite.com/api/',
+    defaultValue: 'https://chocolate-badger-127197.hostingersite.com/',
   );
 
   static final Dio dio = Dio(

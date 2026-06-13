@@ -34,4 +34,28 @@ class AuthService {
 
     return result;
   }
+
+  Future<void> register({
+    required String nombreUsuario,
+    required String email,
+    required String password,
+  }) async {
+    if (nombreUsuario.isEmpty || email.isEmpty || password.isEmpty) {
+      throw Exception('Todos los campos son obligatorios');
+    }
+
+    if (!email.contains('@')) {
+      throw Exception('El email no es válido');
+    }
+
+    if (password.length < 6) {
+      throw Exception('La contraseña debe tener al menos 6 caracteres');
+    }
+
+    await _repository.register(
+      nombreUsuario: nombreUsuario.trim(),
+      email: email.trim(),
+      password: password,
+    );
+  }
 }

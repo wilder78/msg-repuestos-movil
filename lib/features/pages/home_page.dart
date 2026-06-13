@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     final messenger = ScaffoldMessenger.of(context);
 
     try {
-      final response = await DioConfig.dio.get<Map<String, dynamic>>('/health');
+      final response = await DioConfig.dio.get<Map<String, dynamic>>('api/health');
       final message = response.data?['message'] ?? 'API disponible';
       messenger.showSnackBar(
         SnackBar(
@@ -72,11 +72,19 @@ class _HomePageState extends State<HomePage> {
                 cartCount: 0,
                 onCartTap: () {},
                 userName: widget.user?.nombreUsuario,
-                onProfileTap: () => ProfileMenu.show(
-                  context: context,
-                  user: widget.user,
-                  onLogout: _logout,
-                ),
+                onProfileTap: () {
+                  if (widget.user == null) {
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(builder: (_) => const LoginPage()),
+                    );
+                  } else {
+                    ProfileMenu.show(
+                      context: context,
+                      user: widget.user,
+                      onLogout: _logout,
+                    );
+                  }
+                },
                 onMenuTap: () => Scaffold.of(context).openEndDrawer(),
               ),
             ),
