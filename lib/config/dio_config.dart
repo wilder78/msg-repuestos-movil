@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DioConfig {
   // Web:            http://localhost:8080/
@@ -20,9 +21,20 @@ class DioConfig {
       headers: const {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       },
     ),
-  )..interceptors.add(
+  )..interceptors.addAll([
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final prefs = await SharedPreferences.getInstance();
+          final token = prefs.getString('auth_token');
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+      ),
       LogInterceptor(
         requestHeader: true,
         requestBody: true,
@@ -31,5 +43,5 @@ class DioConfig {
         logPrint: (message) =>
             developer.log(message.toString(), name: 'DioConfig'),
       ),
-    );
+    ]);
 }
