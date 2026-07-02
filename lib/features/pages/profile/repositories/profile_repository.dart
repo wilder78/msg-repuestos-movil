@@ -41,6 +41,7 @@ class ProfileRepository {
     required String nombre,
     required String telefono,
     required String direccion,
+    int? municipioId,
   }) async {
     try {
       final response = await DioConfig.dio.put<Map<String, dynamic>>(
@@ -49,6 +50,7 @@ class ProfileRepository {
           'nombre': nombre,
           'telefono': telefono,
           'direccion': direccion,
+          if (municipioId != null) 'municipioId': municipioId,
         },
       );
 

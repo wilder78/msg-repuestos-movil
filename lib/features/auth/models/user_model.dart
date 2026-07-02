@@ -27,7 +27,7 @@ class UserModel {
       idEstado: json['idEstado'] as int? ?? 1,
       fechaCreacion: json['fechaCreacion'] as String? ?? '',
       idRol: json['idRol'] as int? ?? 0,
-      idCliente: json['idCliente'] as int?,
+      idCliente: int.tryParse(json['id_cliente']?.toString() ?? json['idCliente']?.toString() ?? '') as int?,
     );
   }
 
@@ -44,18 +44,28 @@ class UserModel {
   }
 
   bool get isMaster => idRol == 1;
+  bool get isAsistenteAdmin => idRol == 2;
   bool get isVendedor => idRol == 3;
   bool get isCliente => idRol == 4;
-  bool get hasAppAccess => isMaster || isVendedor || isCliente;
+  bool get isAsistenteBodega => idRol == 5;
+
+  /// Solo administrador, asistente administrativo y asistente de bodega
+  bool get canViewProductos => isMaster || isAsistenteAdmin || isAsistenteBodega;
+
+  bool get hasAppAccess => isMaster || isAsistenteAdmin || isVendedor || isCliente || isAsistenteBodega;
 
   String get rolNombre {
     switch (idRol) {
       case 1:
-        return 'Master';
+        return 'Administrador';
+      case 2:
+        return 'Asistente Administrativo';
       case 3:
         return 'Vendedor';
       case 4:
         return 'Cliente';
+      case 5:
+        return 'Asistente de Bodega';
       default:
         return 'Sin acceso';
     }

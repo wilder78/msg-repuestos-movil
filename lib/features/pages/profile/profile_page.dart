@@ -7,9 +7,15 @@ import 'models/profile_model.dart';
 import 'repositories/profile_repository.dart';
 import 'edit_profile_page.dart';
 import 'customer_registration_page.dart';
+import '../productos/productos_page.dart';
+import '../productos/producto_create_modal.dart';
+import '../productos/repositories/productos_repository.dart';
+import '../../auth/models/user_model.dart';
+import '../pedidos/pedidos_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final UserModel? user;
+  const ProfilePage({super.key, this.user});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -50,6 +56,41 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future<void> _openRegistrarProducto() async {
+    setState(() => _isLoading = true);
+    try {
+      final repository = ProductosRepository();
+      final categorias = await repository.getCategorias();
+      if (!mounted) return;
+      
+      setState(() => _isLoading = false);
+      
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => ProductoCreateModal(
+          categorias: categorias,
+          onProductCreated: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Producto registrado correctamente'),
+                backgroundColor: Color(0xFF00A63E),
+              ),
+            );
+          },
+        ),
+      );
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al cargar categorías: $e')),
+        );
+      }
+    }
+  }
+
   Future<void> _logout() async {
     final confirm = await showDialog<bool>(
       context: context,
@@ -86,17 +127,17 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF141414), // Fondo oscuro de la marca
+      backgroundColor: const Color(0xFFF0F2F5),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
           'Mi Perfil',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.redAccent),
+            icon: const Icon(Icons.logout, color: Colors.blue),
             tooltip: 'Cerrar Sesión',
             onPressed: _logout,
           ),
@@ -104,8 +145,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: RefreshIndicator(
         onRefresh: _loadProfile,
-        color: Colors.red,
-        backgroundColor: const Color(0xFF1E1E1E),
+        color: Colors.blue,
+        backgroundColor: Colors.white,
         child: _buildBody(),
       ),
     );
@@ -128,18 +169,18 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 64, color: Colors.redAccent),
+              const Icon(Icons.error_outline, size: 64, color: Colors.blue),
               const SizedBox(height: 16),
               Text(
                 _errorMessage!,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white70, fontSize: 16),
+                style: const TextStyle(color: Colors.black54, fontSize: 16),
               ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _loadProfile,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.blue.shade700,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -172,7 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.black87,
               ),
             ),
             const SizedBox(height: 12),
@@ -181,7 +222,7 @@ class _ProfilePageState extends State<ProfilePage> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
-                color: Colors.white70,
+                color: Colors.black54,
                 height: 1.5,
               ),
             ),
@@ -206,7 +247,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.blue.shade700,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -232,19 +273,19 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundColor: Colors.red.shade900.withOpacity(0.4),
+                  backgroundColor: Colors.blue.shade100,
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.red, width: 2),
+                      border: Border.all(color: Colors.blue.shade700, width: 2),
                     ),
                     alignment: Alignment.center,
                     child: Text(
                       initial,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.blue.shade800,
                       ),
                     ),
                   ),
@@ -256,23 +297,23 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.15),
+                    color: Colors.blue.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.red.withOpacity(0.3)),
+                    border: Border.all(color: Colors.blue.withValues(alpha: 0.2)),
                   ),
                   child: Text(
                     _role.toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: Colors.redAccent,
+                      color: Colors.blue.shade700,
                       letterSpacing: 1.0,
                     ),
                   ),
@@ -297,7 +338,32 @@ class _ProfilePageState extends State<ProfilePage> {
             ]),
           ],
 
-          const SizedBox(height: 40),
+          const SizedBox(height: 30),
+
+          if (['administrador', 'asistente administrativo', 'asistente de bodega'].contains(_role.toLowerCase()))
+            _buildInfoSection('Gestión de Inventario', [
+              _buildActionTile(Icons.inventory_2_outlined, 'Ver Catálogo Completo', () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => ProductosPage(role: _role.toLowerCase())));
+              }),
+              _buildActionTile(Icons.add_box_outlined, 'Registrar Nuevo Producto', _openRegistrarProducto),
+            ]),
+
+          if (['administrador', 'asistente administrativo', 'asistente de bodega'].contains(_role.toLowerCase()))
+            const SizedBox(height: 20),
+
+          if (['vendedor', 'cliente', 'administrador', 'asistente administrativo'].contains(_role.toLowerCase()))
+            _buildInfoSection('Mis Pedidos', [
+              _buildActionTile(Icons.receipt_long_outlined, 'Ir a Pedidos', () {
+                if (widget.user != null) {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => PedidosPage(user: widget.user!)));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error: Usuario no cargado')));
+                }
+              }),
+            ]),
+
+          if (['vendedor', 'cliente', 'administrador'].contains(_role.toLowerCase()))
+            const SizedBox(height: 40),
 
           // Botón de Edición
           SizedBox(
@@ -320,7 +386,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.blue.shade700,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -342,9 +408,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Text(
             title,
             style: const TextStyle(
-              color: Colors.white54,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+              color: Color(0xFF334155), // slate-700
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
               letterSpacing: 0.5,
             ),
           ),
@@ -352,9 +418,9 @@ class _ProfilePageState extends State<ProfilePage> {
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: const Color(0xFF1E1E1E),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.05)),
+            border: Border.all(color: Colors.black12),
           ),
           child: Column(
             children: children,
@@ -369,7 +435,7 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          Icon(icon, color: Colors.redAccent, size: 24),
+          Icon(icon, color: Colors.blue.shade700, size: 24),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
@@ -377,13 +443,13 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(color: Colors.white38, fontSize: 12),
+                  style: const TextStyle(color: Color(0xFF64748B), fontSize: 13, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   value,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black87,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
@@ -392,6 +458,33 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActionTile(IconData icon, String label, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.blue.shade700, size: 24),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios, color: Colors.black38, size: 16),
+          ],
+        ),
       ),
     );
   }

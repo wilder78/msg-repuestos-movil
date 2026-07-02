@@ -39,8 +39,17 @@ class AuthService {
     required String nombreUsuario,
     required String email,
     required String password,
+    // Billing info
+    required String razonSocial,
+    required String numeroDocumento,
+    required int idTipoDocumento,
+    required String direccion,
+    required String telefono,
+    required int municipioId,
+    String? personaContacto, // Optional field from UI
   }) async {
-    if (nombreUsuario.isEmpty || email.isEmpty || password.isEmpty) {
+    if (nombreUsuario.isEmpty || email.isEmpty || password.isEmpty || 
+        razonSocial.isEmpty || numeroDocumento.isEmpty || direccion.isEmpty || telefono.isEmpty) {
       throw Exception('Todos los campos son obligatorios');
     }
 
@@ -56,6 +65,13 @@ class AuthService {
       nombreUsuario: nombreUsuario.trim(),
       email: email.trim(),
       password: password,
+      razonSocial: razonSocial.trim(),
+      numeroDocumento: numeroDocumento.trim(),
+      idTipoDocumento: idTipoDocumento,
+      direccion: direccion.trim(),
+      telefono: telefono.trim(),
+      municipioId: municipioId,
+      personaContacto: personaContacto?.trim(),
     );
   }
 }

@@ -8,11 +8,13 @@ class NavbarIconButton extends StatelessWidget {
     required this.icon,
     required this.tooltip,
     required this.onTap,
+    this.color,
   });
 
   final IconData icon;
   final String tooltip;
   final VoidCallback onTap;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class NavbarIconButton extends StatelessWidget {
       visualDensity: VisualDensity.compact,
       tooltip: tooltip,
       onPressed: onTap,
-      icon: Icon(icon, color: const Color(0xFF12233E), size: 25),
+      icon: Icon(icon, color: color ?? const Color(0xFF12233E), size: 25),
     );
   }
 }

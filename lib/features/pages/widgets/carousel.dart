@@ -152,7 +152,7 @@ class _DotsIndicator extends StatelessWidget {
           decoration: BoxDecoration(
             color: currentIndex == index
                 ? const Color(0xFF11244D)
-                : const Color(0xFF11244D).withOpacity(0.3),
+                : const Color(0xFF11244D).withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(4),
           ),
         ),

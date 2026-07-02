@@ -27,7 +27,9 @@ class ProfileModel {
       municipio: json['municipio'] as String? ?? '',
       municipioId: json['municipioId'] as int?,
       idTipoDocumento: json['idTipoDocumento']?.toString() ?? json['id_tipo_documento']?.toString(),
-      numeroDocumento: json['numeroDocumento']?.toString() ?? json['numero_documento']?.toString(),
+      numeroDocumento: json['numeroDocumento']?.toString() ?? 
+                       json['numero_documento']?.toString() ?? 
+                       json['documento']?.toString(),
     );
   }
 

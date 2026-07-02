@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 import '../../config/dio_config.dart';
 import '../../shared/widgets/navbar/msg_top_navbar.dart';
 import '../auth/login_page.dart';
 import '../auth/models/user_model.dart';
+import 'cart/providers/cart_provider.dart';
+import 'cart/cart_page.dart';
 import 'widgets/home_body.dart';
-import 'widgets/home_drawer.dart';
 import 'widgets/profile_menu.dart';
 
 class HomePage extends StatefulWidget {
@@ -62,15 +64,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: HomeDrawer(onLogout: _logout),
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
             Builder(
               builder: (context) => MsgTopNavbar(
-                cartCount: 0,
-                onCartTap: () {},
+                cartCount: Provider.of<CartProvider>(context).itemCount,
+                onCartTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => CartPage(user: widget.user)),
+                  );
+                },
                 userName: widget.user?.nombreUsuario,
                 onProfileTap: () {
                   if (widget.user == null) {
@@ -85,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     );
                   }
                 },
-                onMenuTap: () => Scaffold.of(context).openEndDrawer(),
+                onLogoutTap: _logout,
               ),
             ),
             Expanded(child: HomeBody(onTestConnection: _testConnection)),

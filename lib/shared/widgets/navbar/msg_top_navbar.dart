@@ -11,14 +11,14 @@ class MsgTopNavbar extends StatelessWidget {
     required this.cartCount,
     required this.onCartTap,
     required this.onProfileTap,
-    required this.onMenuTap,
+    required this.onLogoutTap,
     this.userName,
   });
 
   final int cartCount;
   final VoidCallback onCartTap;
   final VoidCallback onProfileTap;
-  final VoidCallback onMenuTap;
+  final VoidCallback onLogoutTap;
   final String? userName;
 
   @override
@@ -49,9 +49,10 @@ class MsgTopNavbar extends StatelessWidget {
             _ProfileButton(userName: userName, onTap: onProfileTap),
             const SizedBox(width: 10),
             NavbarIconButton(
-              icon: Icons.menu,
-              tooltip: 'Menu',
-              onTap: onMenuTap,
+              icon: Icons.logout,
+              tooltip: 'Cerrar Sesión',
+              onTap: onLogoutTap,
+              color: Colors.redAccent,
             ),
           ],
         ),

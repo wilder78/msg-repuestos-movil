@@ -172,19 +172,19 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF141414),
+      backgroundColor: const Color(0xFFF0F2F5),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white70),
+        iconTheme: const IconThemeData(color: Colors.black87),
         title: const Text(
           'Completar Registro de Cliente',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
         child: _isLoadingData
-            ? const Center(child: CircularProgressIndicator(color: Colors.red))
+            ? const Center(child: CircularProgressIndicator(color: Colors.blue))
             : SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Form(
@@ -196,9 +196,9 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.red.withOpacity(0.1),
+                            color: Colors.red.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.red.withOpacity(0.3)),
+                            border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
                           ),
                           child: Row(
                             children: [
@@ -219,12 +219,12 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                       // Razón Social / Nombre
                       const Text(
                         'Nombre Completo / Razón Social *',
-                        style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                        style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _businessNameController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.black87),
                         decoration: _buildInputDecoration(hint: 'Escribe tu nombre comercial', icon: Icons.business),
                         validator: (value) => value == null || value.trim().isEmpty ? 'Este campo es obligatorio' : null,
                       ),
@@ -240,7 +240,7 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                               children: [
                                 const Text(
                                   'Tipo Doc. *',
-                                  style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 8),
                                 _buildDocumentTypeDropdown(),
@@ -255,13 +255,13 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                               children: [
                                 const Text(
                                   'Documento *',
-                                  style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 8),
                                 TextFormField(
                                   controller: _documentNumberController,
                                   keyboardType: TextInputType.number,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.black87),
                                   decoration: _buildInputDecoration(hint: 'Número', icon: Icons.badge_outlined),
                                   validator: (value) => value == null || value.trim().isEmpty ? 'Obligatorio' : null,
                                 ),
@@ -281,13 +281,13 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                               children: [
                                 const Text(
                                   'Teléfono *',
-                                  style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 8),
                                 TextFormField(
                                   controller: _phoneController,
                                   keyboardType: TextInputType.phone,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.black87),
                                   decoration: _buildInputDecoration(hint: 'Teléfono', icon: Icons.phone_android_outlined),
                                   validator: (value) => value == null || value.trim().isEmpty ? 'Obligatorio' : null,
                                 ),
@@ -300,12 +300,12 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
 
                       const Text(
                         'Dirección de Entrega *',
-                        style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                        style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _addressController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.black87),
                         decoration: _buildInputDecoration(hint: 'Calle # - Barrio', icon: Icons.location_on_outlined),
                         validator: (value) => value == null || value.trim().isEmpty ? 'La dirección es obligatoria' : null,
                       ),
@@ -314,15 +314,15 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                       // Email (Prefilled, read-only)
                       const Text(
                         'Correo Electrónico (Prefijado)',
-                        style: TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.w500),
+                        style: TextStyle(color: Colors.black54, fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _emailController,
                         readOnly: true,
-                        style: const TextStyle(color: Colors.white38),
+                        style: const TextStyle(color: Colors.black38),
                         decoration: _buildInputDecoration(hint: 'Correo', icon: Icons.email_outlined).copyWith(
-                          fillColor: const Color(0xFF1A1A1A),
+                          fillColor: const Color(0xFFEEEEEE),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -338,7 +338,7 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                               children: [
                                 const Text(
                                   'Departamento *',
-                                  style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 8),
                                 _buildDepartmentDropdown(),
@@ -352,7 +352,7 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                               children: [
                                 const Text(
                                   'Municipio *',
-                                  style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 8),
                                 _buildMunicipalityDropdown(),
@@ -371,7 +371,7 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
                         child: ElevatedButton(
                           onPressed: _isSubmitting ? null : _submitForm,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.blue.shade700,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -396,15 +396,15 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.black12),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<int>(
           value: _selectedDocumentType,
-          dropdownColor: const Color(0xFF1E1E1E),
-          style: const TextStyle(color: Colors.white),
+          dropdownColor: Colors.white,
+          style: const TextStyle(color: Colors.black87),
           isExpanded: true,
           items: _documentTypes.map((type) {
             return DropdownMenuItem<int>(
@@ -425,16 +425,16 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.black12),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<int>(
           value: _selectedDepartment,
-          dropdownColor: const Color(0xFF1E1E1E),
-          style: const TextStyle(color: Colors.white),
-          hint: const Text('Selec.', style: TextStyle(color: Colors.white38)),
+          dropdownColor: Colors.white,
+          style: const TextStyle(color: Colors.black87),
+          hint: const Text('Selec.', style: TextStyle(color: Colors.black38)),
           isExpanded: true,
           items: _departments.map((dept) {
             return DropdownMenuItem<int>(
@@ -457,16 +457,16 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.black12),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<int>(
           value: _selectedMunicipality,
-          dropdownColor: const Color(0xFF1E1E1E),
-          style: const TextStyle(color: Colors.white),
-          hint: const Text('Selec.', style: TextStyle(color: Colors.white38)),
+          dropdownColor: Colors.white,
+          style: const TextStyle(color: Colors.black87),
+          hint: const Text('Selec.', style: TextStyle(color: Colors.black38)),
           isExpanded: true,
           items: _municipalities.map((muni) {
             return DropdownMenuItem<int>(
@@ -485,22 +485,22 @@ class _CustomerRegistrationPageState extends State<CustomerRegistrationPage> {
   InputDecoration _buildInputDecoration({required String hint, required IconData icon}) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: const TextStyle(color: Colors.white38),
-      prefixIcon: Icon(icon, color: Colors.redAccent),
+      hintStyle: const TextStyle(color: Colors.black38),
+      prefixIcon: Icon(icon, color: Colors.blue.shade700),
       filled: true,
-      fillColor: const Color(0xFF1E1E1E),
+      fillColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: const BorderSide(color: Colors.black12),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.white.withOpacity(0.05)),
+        borderSide: const BorderSide(color: Colors.black12),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.red),
+        borderSide: BorderSide(color: Colors.blue.shade700),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),

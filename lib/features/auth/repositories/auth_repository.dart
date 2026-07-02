@@ -34,8 +34,6 @@ class AuthRepository {
       final requestPath = error.requestOptions.path;
       final baseUrl = error.requestOptions.baseUrl;
       
-      print('DEBUG LOGIN ERROR: status=$statusCode, path=$requestPath, baseUrl=$baseUrl, data=$responseData');
-
       if (statusCode == 401) {
         throw Exception('Credenciales incorrectas');
       } else if (statusCode == 403) {
@@ -55,8 +53,16 @@ class AuthRepository {
     required String nombreUsuario,
     required String email,
     required String password,
+    required String razonSocial,
+    required String numeroDocumento,
+    required int idTipoDocumento,
+    required String direccion,
+    required String telefono,
+    required int municipioId,
+    String? personaContacto,
   }) async {
     try {
+      // 1. Register User
       await DioConfig.dio.post<Map<String, dynamic>>(
         'api/users/register?source=app',
         data: {
@@ -65,16 +71,33 @@ class AuthRepository {
           'password': password,
         },
       );
+
+      // 2. Register Customer (linking via email)
+      await DioConfig.dio.post<Map<String, dynamic>>(
+        'api/customers',
+        data: {
+          'idTipoDocumento': idTipoDocumento,
+          'numeroDocumento': numeroDocumento,
+          'razonSocial': razonSocial,
+          'direccion': direccion,
+          'telefono': telefono,
+          'email': email,
+          'tipoCliente': 'Consumidor final',
+          'municipioId': municipioId,
+          'activo': 1,
+          'personaContacto': personaContacto ?? razonSocial, // Fallback to razonSocial if null
+        },
+      );
     } on DioException catch (error) {
       final statusCode = error.response?.statusCode;
       final data = error.response?.data;
       final requestPath = error.requestOptions.path;
       final baseUrl = error.requestOptions.baseUrl;
 
-      print('DEBUG REGISTER ERROR: status=$statusCode, path=$requestPath, baseUrl=$baseUrl, data=$data');
+
+
       
       if (statusCode == 400 || statusCode == 409) {
-        // Asumiendo que el backend envía un mensaje de error
         final msg = data is Map ? (data['message'] ?? data['error']) : 'El correo ya está registrado o los datos son inválidos';
         throw Exception(msg);
       } else if (statusCode == 404) {
